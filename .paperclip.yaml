@@ -67,3 +67,34 @@ agents:
         BINANCE_LIVE_API_SECRET:
           kind: secret
           requirement: optional
+routines:
+  quant-tick:
+    triggers:
+      - kind: schedule
+        cronExpression: "*/15 * * * *"
+        timezone: UTC
+  cro-tick:
+    triggers:
+      - kind: schedule
+        cronExpression: "* * * * *"
+        timezone: UTC
+  trader-tick:
+    triggers:
+      - kind: schedule
+        cronExpression: "* * * * *"
+        timezone: UTC
+  ops-reconcile:
+    triggers:
+      - kind: schedule
+        cronExpression: "*/5 * * * *"
+        timezone: UTC
+  ceo-weekly-retro:
+    triggers:
+      - kind: schedule
+        cronExpression: "0 23 * * 0"
+        timezone: UTC
+  promotion-audit:
+    triggers:
+      - kind: schedule
+        cronExpression: "0 22 * * 0"
+        timezone: UTC

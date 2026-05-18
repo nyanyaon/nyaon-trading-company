@@ -3,17 +3,7 @@ name: Promotion Audit
 slug: promotion-audit
 assignee: ceo
 project: strategy-testing
-schedule:
-  timezone: UTC
-  startsAt: 2026-05-31T22:00:00Z
-  recurrence:
-    frequency: weekly
-    interval: 1
-    weekdays:
-      - sunday
-    time:
-      hour: 22
-      minute: 0
+recurring: true
 ---
 
 One-shot intent: audit testnet performance against `RISK_POLICY.md` §6 promotion criteria. Runs weekly as a safety net so missed weeks still get audited.

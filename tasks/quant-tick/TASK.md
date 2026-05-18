@@ -3,12 +3,7 @@ name: Quant Tick
 slug: quant-tick
 assignee: quant
 project: strategy-testing
-schedule:
-  timezone: UTC
-  startsAt: 2026-05-18T00:00:00Z
-  recurrence:
-    frequency: minutely
-    interval: 15
+recurring: true
 ---
 
 Run the signal-pipeline skill. Pull universe, apply filters, run trend-pullback-v1 and mean-revert-v1, rank top-3 per strategy, cluster-cap, write signals to `state/signals/<ts>.jsonl`.

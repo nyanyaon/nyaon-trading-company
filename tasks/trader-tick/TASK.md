@@ -3,12 +3,7 @@ name: Trader Tick
 slug: trader-tick
 assignee: trader
 project: strategy-testing
-schedule:
-  timezone: UTC
-  startsAt: 2026-05-18T00:00:00Z
-  recurrence:
-    frequency: minutely
-    interval: 1
+recurring: true
 ---
 
 Run the exchange-ops skill (execution side). Read `state/halt.json`. For each `state/orders/pending/<id>.json`, place the entry order with deterministic clientOrderId. On fill, place paired stop-loss and take-profit reduce-only orders. Update `state/positions/` and `state/orders/filled/`.
