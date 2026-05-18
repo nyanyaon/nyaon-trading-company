@@ -1,0 +1,69 @@
+schema: paperclip/v1
+agents:
+  ceo:
+    adapter:
+      type: claude_local
+      config:
+        model: claude-sonnet-4-6
+  cro:
+    adapter:
+      type: claude_local
+      config:
+        model: claude-sonnet-4-6
+  quant:
+    adapter:
+      type: claude_local
+      config:
+        model: claude-sonnet-4-6
+    inputs:
+      env:
+        BINANCE_TESTNET_API_KEY:
+          kind: secret
+          requirement: required
+        BINANCE_TESTNET_API_SECRET:
+          kind: secret
+          requirement: required
+        BINANCE_LIVE_API_KEY:
+          kind: secret
+          requirement: optional
+        BINANCE_LIVE_API_SECRET:
+          kind: secret
+          requirement: optional
+  trader:
+    adapter:
+      type: claude_local
+      config:
+        model: claude-haiku-4-5-20251001
+    inputs:
+      env:
+        BINANCE_TESTNET_API_KEY:
+          kind: secret
+          requirement: required
+        BINANCE_TESTNET_API_SECRET:
+          kind: secret
+          requirement: required
+        BINANCE_LIVE_API_KEY:
+          kind: secret
+          requirement: optional
+        BINANCE_LIVE_API_SECRET:
+          kind: secret
+          requirement: optional
+  ops:
+    adapter:
+      type: claude_local
+      config:
+        model: claude-haiku-4-5-20251001
+    inputs:
+      env:
+        BINANCE_TESTNET_API_KEY:
+          kind: secret
+          requirement: required
+        BINANCE_TESTNET_API_SECRET:
+          kind: secret
+          requirement: required
+        BINANCE_LIVE_API_KEY:
+          kind: secret
+          requirement: optional
+        BINANCE_LIVE_API_SECRET:
+          kind: secret
+          requirement: optional
