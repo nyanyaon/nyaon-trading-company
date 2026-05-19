@@ -50,6 +50,7 @@ All seven steps in `ceo-connectivity-check` report `ok` and `state/connection_ok
 
 ## Dependencies
 
+- `nyaon-cli` project must report done (CLI reachable from workspace; `skills/nyaon-cli/SKILL.md` authored).
 - `paperclipai company import` succeeded
 - `BINANCE_TESTNET_API_KEY` / `BINANCE_TESTNET_API_SECRET` provisioned
 - `uv` on PATH for the agent subprocess
