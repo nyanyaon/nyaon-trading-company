@@ -85,7 +85,8 @@ class BinanceClient:
             "weight": r.headers.get("X-MBX-USED-WEIGHT-1m"),
             "latency_ms": int(r.elapsed.total_seconds() * 1000),
         })
-        (_LOG_DIR / f"{date}.jsonl").open("a").write(line + "\n")
+        with (_LOG_DIR / f"{date}.jsonl").open("a") as f:
+            f.write(line + "\n")
 
     @retry(
         retry=retry_if_exception_type((httpx.HTTPError, TimestampSkewError)),
