@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["coid", "symbol", "side", "type", "status", "qty", "ts"],
+  "properties": {
+    "coid": { "type": "string" },
+    "symbol": { "type": "string" },
+    "side": { "enum": ["BUY", "SELL"] },
+    "type": { "enum": ["MARKET", "LIMIT", "STOP_MARKET", "TAKE_PROFIT_MARKET"] },
+    "status": { "enum": ["NEW", "FILLED", "CANCELED", "REJECTED", "EXPIRED"] },
+    "qty": { "type": "number" },
+    "price": { "type": ["number", "null"] },
+    "stop_price": { "type": ["number", "null"] },
+    "avg_fill_price": { "type": ["number", "null"] },
+    "ts": { "type": "string", "format": "date-time" },
+    "intent_id": { "type": "string" },
+    "attempt": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

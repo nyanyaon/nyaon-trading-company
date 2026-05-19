@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["mode", "set_by", "set_at", "reason", "live_size_multiplier"],
+  "properties": {
+    "mode": { "enum": ["testnet", "live"] },
+    "set_by": { "type": "string" },
+    "set_at": { "type": "string", "format": "date-time" },
+    "reason": { "type": "string" },
+    "live_size_multiplier": { "type": "number", "minimum": 0, "maximum": 1 }
+  },
+  "additionalProperties": false
+}

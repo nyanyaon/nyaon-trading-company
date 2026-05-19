@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["ts", "kind", "detail"],
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "kind": { "type": "string" },
+    "detail": { "type": "object" }
+  },
+  "additionalProperties": false
+}

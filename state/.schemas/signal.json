@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["ts", "signals"],
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["symbol", "side", "strength", "suggested_sl_bps", "suggested_tp_bps", "ttl", "source"],
+        "properties": {
+          "symbol": { "type": "string" },
+          "side": { "enum": ["BUY", "SELL"] },
+          "strength": { "type": "number", "minimum": 0, "maximum": 1 },
+          "suggested_sl_bps": { "type": "integer", "minimum": 1 },
+          "suggested_tp_bps": { "type": "integer", "minimum": 1 },
+          "ttl": { "type": "string", "format": "date-time" },
+          "source": { "enum": ["trend", "mean_reversion"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["ts", "equity", "available", "positions", "open_orders", "daily_pnl", "weekly_pnl"],
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "equity": { "type": "number" },
+    "available": { "type": "number" },
+    "positions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["symbol", "qty", "entry", "unrealized"],
+        "properties": {
+          "symbol": { "type": "string" },
+          "qty": { "type": "number" },
+          "entry": { "type": "number" },
+          "unrealized": { "type": "number" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "open_orders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["coid", "symbol", "type", "price"],
+        "properties": {
+          "coid": { "type": "string" },
+          "symbol": { "type": "string" },
+          "type": { "type": "string" },
+          "price": { "type": "number" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "daily_pnl": { "type": "number" },
+    "weekly_pnl": { "type": "number" }
+  },
+  "additionalProperties": false
+}

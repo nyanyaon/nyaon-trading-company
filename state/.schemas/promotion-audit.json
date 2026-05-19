@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["ts", "pass", "criteria"],
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "pass": { "type": "boolean" },
+    "criteria": {
+      "type": "object",
+      "required": ["hit_rate", "profit_factor", "max_drawdown", "ops_critical_count", "avg_slippage_bps"],
+      "properties": {
+        "hit_rate": { "type": "number" },
+        "profit_factor": { "type": "number" },
+        "max_drawdown": { "type": "number" },
+        "ops_critical_count": { "type": "integer" },
+        "avg_slippage_bps": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
