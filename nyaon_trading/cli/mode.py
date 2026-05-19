@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import calendar
 import json
 import os
 import sys
@@ -30,7 +31,7 @@ def _latest_audit() -> dict | None:
 
 def _audit_age_s(audit: dict) -> float:
     t = time.strptime(audit["ts"].replace("Z", ""), "%Y-%m-%dT%H:%M:%S")
-    return time.time() - time.mktime(t) + time.timezone
+    return time.time() - calendar.timegm(t)
 
 
 def _has_unresolved_incident() -> bool:

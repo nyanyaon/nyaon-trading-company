@@ -85,3 +85,15 @@ def test_accept_all_preconditions_met(tmp_path, monkeypatch):
     new = json.loads((state / "mode.json").read_text())
     assert new["mode"] == "live"
     assert new["live_size_multiplier"] == 0.5
+
+
+def test_refuse_when_audit_too_old(tmp_path, monkeypatch):
+    state = _seed(tmp_path)
+    monkeypatch.chdir(tmp_path)
+    # Audit timestamped 25 hours ago
+    _write_audit(state / "audits" / "promotion-old.json", pass_=True, age_s=25 * 3600)
+    monkeypatch.setenv("NYAON_AGENT_ROLE", "ceo")
+    monkeypatch.setenv("BINANCE_LIVE_API_KEY", "k")
+    monkeypatch.setenv("BINANCE_LIVE_API_SECRET", "s")
+    with pytest.raises(GoLiveRefused, match="older than 24h"):
+        set_live("manual ramp")
