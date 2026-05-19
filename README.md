@@ -68,6 +68,34 @@ Then provision secrets:
 
 Start the schedules and watch the first 24h of Ops reconcile output before enabling full filtering.
 
+## Code & tooling
+
+The trading code lives in `nyaon_trading/` and is exposed as the `nyaon` CLI. The package is managed exclusively by [`uv`](https://docs.astral.sh/uv/) — no `pip`, `poetry`, `conda`, `pyenv`, or `pipx`.
+
+### Quickstart
+
+```bash
+uv sync                                  # install deps from uv.lock
+uv run pytest tests/unit -q              # unit tests, no network
+
+# Integration (testnet):
+export BINANCE_TESTNET_API_KEY=...
+export BINANCE_TESTNET_API_SECRET=...
+RUN_TESTNET_TESTS=1 uv run pytest tests/integration -q
+
+# Run CLIs:
+./bin/nyaon mode show
+./bin/nyaon signals
+./bin/nyaon snapshot
+```
+
+### Adding dependencies
+
+```bash
+uv add <package>          # also updates uv.lock
+uv lock --upgrade-package <package>
+```
+
 ## References
 
 - Agent Companies spec: https://agentcompanies.io/specification

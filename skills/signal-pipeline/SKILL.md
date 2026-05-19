@@ -81,3 +81,13 @@ Weekly retro reads:
 - Top winning and losing setups
 
 CEO proposes diffs; Quant integrates them in next week's params.
+
+## Implementation
+
+Signal computation is deterministic Python in `nyaon_trading.strategy.pipeline`. Quant agent runs:
+
+```
+uv run nyaon signals
+```
+
+This writes `state/signals/<utc_iso>.json`. Quant reads the newest file, applies meta-judgement (skip stale, gate by RISK_POLICY caps, dedupe vs open intents), and writes one or more intents to `state/intents/<intent_id>.json` with `status="proposed"`.

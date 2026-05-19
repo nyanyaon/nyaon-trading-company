@@ -25,3 +25,12 @@ Done when:
 - Hand-off recorded — pass hands `month-1-goal` the green light; fail keeps `strategy-testing` open
 
 This task auto-completes itself after writing `state/mode.json = live` (no re-audit needed once promoted).
+
+## Procedure (executed by promotion-audit task)
+
+1. `uv sync --frozen`
+2. `uv run pytest tests/unit -q` — must pass.
+3. `RUN_TESTNET_TESTS=1 uv run pytest tests/integration -q` — must pass.
+4. Compute metrics from `state/orders/*.json` and `state/snapshots/*.json` for the last 5 trading days.
+5. Write `state/audits/promotion-<YYYY-MM-DD>.json` per `state/.schemas/promotion-audit.json`.
+6. CEO reads the audit on Sunday retro. If `pass=true` and ≤24h old, CEO may run `uv run nyaon mode set live --reason 'week-2 audit pass'`.

@@ -53,3 +53,12 @@ Both strategies must produce only signals on symbols that pass `RISK_POLICY.md` 
 - You may NOT call CRO's gates yourself.
 - You may NOT place orders.
 - You may NOT modify strategy code without CEO approval.
+
+## Tooling
+
+Quant may invoke:
+- `uv run nyaon signals` — runs the deterministic signal pipeline, writes `state/signals/<ts>.json`.
+- `uv run nyaon klines <SYM> <interval> <limit>` — ad-hoc market data inspection.
+- `uv run nyaon account` — read-only account snapshot.
+
+Quant writes proposed intents directly to `state/intents/<intent_id>.json` (status=`proposed`). Quant must not invoke `nyaon place-order`, `nyaon mode set ...`, or `nyaon halt`.

@@ -87,3 +87,19 @@ Mode switch is driven by `state/mode.json` (set by CEO promotion entry).
 - 5xx / timeout → retry with same `coid` (idempotent).
 - `-1021` (timestamp) → resync server time, retry once.
 - Anything unrecognized → escalate to Ops.
+
+## Implementation
+
+All endpoints in this skill are implemented in the `nyaon_trading` Python package. Agents call them via the `nyaon` CLI (see `bin/nyaon`). Build/run with `uv`:
+
+| Action | Command |
+|---|---|
+| Account snapshot | `uv run nyaon account` |
+| Klines | `uv run nyaon klines <SYM> <interval> <limit>` |
+| Place order | `uv run nyaon place-order --intent state/intents/<id>.json` |
+| Cancel order | `uv run nyaon cancel --symbol <SYM> --coid <coid>` |
+| Reconcile | `uv run nyaon snapshot` |
+| Halt / resume | `uv run nyaon halt --reason '...'` / `uv run nyaon resume` |
+| Mode switch | `uv run nyaon mode show` / `uv run nyaon mode set testnet\|live --reason '...'` |
+
+All CLIs emit JSON on stdout and exit non-zero on failure. Mode + secrets resolved from `state/mode.json` and env at every invocation.
