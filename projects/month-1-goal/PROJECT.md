@@ -36,8 +36,10 @@ If the week-2 promotion audit fails: live phase shifts to weeks 4-5 (no shortcut
 
 ## Dependencies
 
+- `connection-check` must produce `state/connection_ok.json` with `pass=true` (gating every tick).
 - `strategy-testing` must produce a green promotion audit before any live order is placed.
 - Live API secrets (`BINANCE_LIVE_API_KEY` / `BINANCE_LIVE_API_SECRET`) must be provisioned by the user before week 3.
+- The dependency chain is strict: `connection-check` → `strategy-testing` → `month-1-goal`.
 
 ## Out of scope
 

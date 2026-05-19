@@ -9,6 +9,10 @@ owner: ceo
 
 Validation phase. Binance USDT-M **testnet** only. No live capital. Outputs are baseline metrics + a pass/fail audit against `RISK_POLICY.md` §6 promotion criteria.
 
+## Dependencies
+
+- `connection-check` must produce `state/connection_ok.json` with `pass=true` before any tick in this project does work. Each tick (`quant-tick`, `cro-tick`, `trader-tick`, `ops-reconcile`) reads this file at the top of its run and skips cleanly if it is missing or `pass != true`.
+
 ## Scope
 
 | Week | Focus                                                                                              |

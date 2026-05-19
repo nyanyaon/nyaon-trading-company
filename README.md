@@ -2,16 +2,17 @@
 
 Autonomous AI crypto futures trading firm. 5 agents, Binance USDT-M, self-improving.
 
-**Month-1 goal:** $1000 cumulative PnL. **Phase plan:** testnet weeks 1-2 (`strategy-testing` project), conditional promotion to live weeks 3-4 (`month-1-goal` project).
+**Month-1 goal:** $1000 cumulative PnL. **Phase plan:** day-0 connectivity gate (`connection-check`), testnet weeks 1-2 (`strategy-testing`), conditional promotion to live weeks 3-4 (`month-1-goal`).
 
 ## Projects
 
-| Project           | Phase            | Owns                                                                 |
-| ----------------- | ---------------- | -------------------------------------------------------------------- |
-| `strategy-testing`| Wk 1-2 testnet   | Pipeline ticks (quant/cro/trader/ops) + week-2 `promotion-audit`    |
-| `month-1-goal`    | Outcome / Wk 3-4 | `ceo-weekly-retro`, live ramp, $1000 PnL target                     |
+| Project            | Phase            | Owns                                                                 |
+| ------------------ | ---------------- | -------------------------------------------------------------------- |
+| `connection-check` | Day 0            | `ceo-connectivity-check` — writes `state/connection_ok.json` gate    |
+| `strategy-testing` | Wk 1-2 testnet   | Pipeline ticks (quant/cro/trader/ops) + week-2 `promotion-audit`     |
+| `month-1-goal`     | Outcome / Wk 3-4 | `ceo-weekly-retro`, live ramp, $1000 PnL target                      |
 
-`month-1-goal` depends on `strategy-testing` passing the promotion audit before any live order is placed.
+Strict dependency chain: `connection-check` → `strategy-testing` → `month-1-goal`. Every tick in `strategy-testing` (and `month-1-goal`) checks for `state/connection_ok.json` at the top of its run and no-ops cleanly when missing. `month-1-goal` additionally requires `strategy-testing`'s `promotion-audit` to pass before any live order is placed.
 
 ## Workflow
 

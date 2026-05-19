@@ -6,6 +6,18 @@ project: strategy-testing
 recurring: true
 ---
 
+## Precondition
+
+Before any work, check `state/connection_ok.json` exists and contains `{"pass": true, ...}`. If missing or `pass != true`, **skip the tick** with a single line in `journal/cro/YYYY-MM-DD.log`:
+
+```
+<ts> skip: connection-check not passed (state/connection_ok.json missing or pass=false)
+```
+
+Exit cleanly (no error).
+
+## Body
+
 Run the risk-gating skill. Read proposed intents in `state/intents/`, run the 9 gates in order, size and approve passing ones (update `status` to `approved`), reject failures with `rejection_reason`. Halt via `uv run nyaon halt --reason '...'` (touches `state/halt.flag`).
 
 Done when:

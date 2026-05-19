@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["ts", "pass", "checks"],
+  "properties": {
+    "ts": { "type": "string", "format": "date-time" },
+    "pass": { "type": "boolean" },
+    "checks": {
+      "type": "object",
+      "required": [
+        "tooling",
+        "account",
+        "klines",
+        "snapshot",
+        "halt_round_trip",
+        "go_live_refused",
+        "per_role_probe"
+      ],
+      "properties": {
+        "tooling": { "enum": ["ok", "fail"] },
+        "account": { "enum": ["ok", "fail"] },
+        "klines": { "enum": ["ok", "fail"] },
+        "snapshot": { "enum": ["ok", "fail"] },
+        "halt_round_trip": { "enum": ["ok", "fail"] },
+        "go_live_refused": { "enum": ["ok", "fail"] },
+        "per_role_probe": { "enum": ["ok", "fail"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -2,7 +2,7 @@
 name: CEO Connectivity Check
 slug: ceo-connectivity-check
 assignee: ceo
-project: strategy-testing
+project: connection-check
 recurring: false
 ---
 
@@ -95,9 +95,38 @@ RUN_TESTNET_TESTS=1 uv run pytest tests/integration -q
 
 Skip if a position would be undesirable; this places a real 0.002 BTCUSDT testnet round-trip.
 
-### 7. Write report
+### 7. Write report + gate file
 
-Write `journal/audits/connectivity-<YYYY-MM-DD>.md` with one section per numbered step, listing pass/fail and any error output. On any failure, also write `state/incidents/<ts>.json` and raise the halt flag via `uv run nyaon halt --reason "connectivity check failed: <step>"`.
+Write `journal/audits/connectivity-<YYYY-MM-DD>.md` with one section per numbered step, listing pass/fail and any error output.
+
+**On full pass**: atomically write `state/connection_ok.json` per `state/.schemas/connection_ok.json`:
+
+```bash
+cat > state/connection_ok.json.tmp <<EOF
+{
+  "ts": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "pass": true,
+  "checks": {
+    "tooling": "ok",
+    "account": "ok",
+    "klines": "ok",
+    "snapshot": "ok",
+    "halt_round_trip": "ok",
+    "go_live_refused": "ok",
+    "per_role_probe": "ok"
+  }
+}
+EOF
+mv state/connection_ok.json.tmp state/connection_ok.json
+```
+
+This file unblocks every recurring tick in `strategy-testing` and `month-1-goal`. Without it, those ticks no-op.
+
+**On any failure**: do NOT write `state/connection_ok.json`. Instead:
+
+1. Write `state/incidents/<ts>.json` with the failing step.
+2. Raise the halt flag: `uv run nyaon halt --reason "connectivity check failed: <step>"`.
+3. Report to the user with the exact failed step + observed error.
 
 ## Boundaries
 
