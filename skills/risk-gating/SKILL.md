@@ -19,7 +19,21 @@ CRO's deterministic decision skill. Inputs are proposed intents in `state/intent
 8. **Sizing fit** — computed qty ≤ 1.0% equity risk and ≤ 5x leverage.
 9. **Edge vs cost** — `expected_edge_bps > 4 × (spread_bps + expected_slippage_bps)`.
 
-Each rejection writes the failing gate number to the approval record.
+Each rejection writes the failing gate number to the intent's `rejection_reason`.
+
+## Implementation (CLI)
+
+CRO reads + writes intents directly to `state/intents/*.json` (no Binance call needed for gating). For state reads and halt transitions:
+
+| Action | Command |
+|---|---|
+| Read newest snapshot | `ls -t state/snapshots/*.json \| head -1` then read it |
+| Read newest incident | `ls -t state/incidents/*.json \| head -1` then read it |
+| Raise halt | `uv run nyaon halt --reason '<gate-or-event>'` |
+| Sanity-check exchange | `uv run nyaon account` (read-only) |
+| Sanity-check reconciliation | `uv run nyaon snapshot` (read-only sanity; does not replace Ops cadence) |
+
+CRO must not run `uv run nyaon place-order`, `nyaon resume`, or `nyaon mode set ...`.
 
 ## Sizing math
 
@@ -35,45 +49,45 @@ If `leverage_used > 5`: `qty = qty_raw * (5 / leverage_used)`.
 If cluster cap would be exceeded: `qty = qty_to_fit_cap`.
 Round qty to symbol's step size from `exchangeInfo`.
 
-## Order intent record
+## Order intent record (matches `state/.schemas/intent.json`)
+
+CRO mutates the same `state/intents/<intent_id>.json` file Quant created — flips `status` from `proposed` to `approved` and fills the sized fields:
 
 ```json
 {
-  "id": "ord_<signal-id>",
-  "signal_id": "sig_...",
+  "id": "sig_BTCUSDT_long_<hash>",
   "symbol": "BTCUSDT",
-  "side": "buy",
-  "qty": 0.012,
-  "entry": 68312.5,
-  "stop": 67890.0,
-  "take_profit": 69157.0,
+  "side": "BUY",
+  "qty_quote": 50.0,
+  "sl_bps": 80,
+  "tp_bps": 160,
   "leverage": 3,
-  "client_order_id_prefix": "ord_<signal-id>"
+  "ttl": "2026-05-19T17:45:00Z",
+  "source_signal": "sig_BTCUSDT_long_<hash>",
+  "status": "approved",
+  "approved_at": "2026-05-19T17:31:08Z"
 }
 ```
 
+On rejection, set `status: "rejected"` and `rejection_reason: "<gate-N>: <detail>"`. Trader's `uv run nyaon place-order --intent <path>` consumes only `status=approved` intents.
+
 ## Halt logic
 
-Raise `halt_flag = true` on any of:
+Raise halt by running `uv run nyaon halt --reason '<event>'`. The CLI writes `state/halt.flag` with a UTC timestamp + reason on the first line. Triggers:
 
 - Hard limit breach (`RISK_POLICY.md` §1)
 - Daily or weekly circuit breaker hit
 - 3 API auth failures in 5 minutes
 - Latency > 2s on order placement for 3 consecutive Trader ticks (Ops reports this)
-- Ops critical mismatch event
+- Ops critical mismatch event (Ops also halts via `uv run nyaon halt`)
 
-Halt-flag transitions:
+`state/halt.flag` content example:
 
-```json
-{
-  "halt_flag": true,
-  "raised_at": "2026-05-18T14:23:10Z",
-  "raised_by": "cro",
-  "reason": "daily_loss_breach",
-  "cleared_at": null,
-  "cleared_by": null
-}
 ```
+2026-05-18T14:23:10Z daily_loss_breach
+```
+
+Only the CEO clears the flag (`uv run nyaon resume`).
 
 ## Self-improvement hooks
 

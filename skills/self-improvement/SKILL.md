@@ -11,9 +11,27 @@ CEO weekly retro. Runs every Sunday 23:00 UTC. Drives the company's improvement 
 
 - `state/snapshots/` (Ops snapshots over the week)
 - `state/signals/` (all signals raised by Quant)
+- `state/intents/` (proposed/approved/rejected/filled intents)
 - `state/orders/` and `state/strategy_stats/` (placed orders and closed-trade outcomes)
 - `state/incidents/` (Ops critical mismatches)
+- `state/audits/` (prior promotion-audit results)
 - `journal/cro/`, `journal/trader/`, `journal/ops/`, `journal/quant/`
+
+## CLI (read-only checks during the retro)
+
+| Action | Command |
+|---|---|
+| Confirm current mode | `uv run nyaon mode show` |
+| Probe testnet account | `uv run nyaon account` |
+| Force a fresh snapshot | `uv run nyaon snapshot` (exit 0 = clean) |
+
+For mode transitions during the retro (week 2 promotion or rollback):
+
+| Action | Command |
+|---|---|
+| Promote testnet → live | `uv run nyaon mode set live --reason 'week-2 audit pass'` (enforces 5 preconditions) |
+| Rollback live → testnet | `uv run nyaon mode set testnet --reason '<event>'` (always allowed) |
+| Clear halt after root-cause review | `uv run nyaon resume` |
 
 ## Retro outline
 
@@ -53,9 +71,9 @@ End of week 2: audit `RISK_POLICY.md` §6. Required, all five must pass over the
 - Zero unresolved Ops critical mismatches
 - Avg slippage ≤ 5 bps
 
-If pass: write a promotion entry in `state/mode.json` (`{"mode": "live", "promoted_at": "..."}`), notify user to rotate API keys, then notify Trader/Ops.
+If pass: run `uv run nyaon mode set live --reason 'week-2 audit pass'`. The CLI enforces all 5 preconditions (audit fresh, audit pass, live secrets present, no halt flag, no unresolved incidents) and atomically rewrites `state/mode.json`. Then notify user to rotate API keys and notify Trader/Ops.
 
-If fail: log the failed criteria, extend testnet by one week, propose targeted diffs.
+If fail: log the failed criteria, extend testnet by one week, propose targeted diffs. Do NOT attempt `nyaon mode set live` — the CLI will refuse and that's the intended safety.
 
 ## Agent self-improvement
 
