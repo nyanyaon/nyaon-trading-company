@@ -1,1 +1,2 @@
-#!/usr/bin/env -S uv run python -m nyaon_trading.cli
+#!/usr/bin/env bash
+exec uv run nyaon "$@"
