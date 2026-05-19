@@ -60,15 +60,20 @@ def _now() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
-def place_market(client: BinanceClient, intent: dict[str, Any], qty: float, attempt: int = 0) -> OrderResult:
+def place_market(
+    client: BinanceClient, intent: dict[str, Any], qty: float, attempt: int = 0
+) -> OrderResult:
     coid = coid_for(intent["id"], attempt)
-    body = client.post_signed("/fapi/v1/order", {
-        "symbol": intent["symbol"],
-        "side": intent["side"],
-        "type": "MARKET",
-        "quantity": qty,
-        "newClientOrderId": coid,
-    })
+    body = client.post_signed(
+        "/fapi/v1/order",
+        {
+            "symbol": intent["symbol"],
+            "side": intent["side"],
+            "type": "MARKET",
+            "quantity": qty,
+            "newClientOrderId": coid,
+        },
+    )
     r = OrderResult(
         coid=coid,
         symbol=intent["symbol"],
@@ -87,17 +92,22 @@ def place_market(client: BinanceClient, intent: dict[str, Any], qty: float, atte
     return r
 
 
-def place_stop(client: BinanceClient, intent: dict[str, Any], stop_price: float, attempt: int = 0) -> OrderResult:
+def place_stop(
+    client: BinanceClient, intent: dict[str, Any], stop_price: float, attempt: int = 0
+) -> OrderResult:
     coid = sl_coid(intent["id"], attempt)
     opposite = "SELL" if intent["side"] == "BUY" else "BUY"
-    body = client.post_signed("/fapi/v1/order", {
-        "symbol": intent["symbol"],
-        "side": opposite,
-        "type": "STOP_MARKET",
-        "stopPrice": stop_price,
-        "closePosition": "true",
-        "newClientOrderId": coid,
-    })
+    body = client.post_signed(
+        "/fapi/v1/order",
+        {
+            "symbol": intent["symbol"],
+            "side": opposite,
+            "type": "STOP_MARKET",
+            "stopPrice": stop_price,
+            "closePosition": "true",
+            "newClientOrderId": coid,
+        },
+    )
     r = OrderResult(
         coid=coid,
         symbol=intent["symbol"],
@@ -116,17 +126,22 @@ def place_stop(client: BinanceClient, intent: dict[str, Any], stop_price: float,
     return r
 
 
-def place_take_profit(client: BinanceClient, intent: dict[str, Any], tp_price: float, attempt: int = 0) -> OrderResult:
+def place_take_profit(
+    client: BinanceClient, intent: dict[str, Any], tp_price: float, attempt: int = 0
+) -> OrderResult:
     coid = tp_coid(intent["id"], attempt)
     opposite = "SELL" if intent["side"] == "BUY" else "BUY"
-    body = client.post_signed("/fapi/v1/order", {
-        "symbol": intent["symbol"],
-        "side": opposite,
-        "type": "TAKE_PROFIT_MARKET",
-        "stopPrice": tp_price,
-        "closePosition": "true",
-        "newClientOrderId": coid,
-    })
+    body = client.post_signed(
+        "/fapi/v1/order",
+        {
+            "symbol": intent["symbol"],
+            "side": opposite,
+            "type": "TAKE_PROFIT_MARKET",
+            "stopPrice": tp_price,
+            "closePosition": "true",
+            "newClientOrderId": coid,
+        },
+    )
     r = OrderResult(
         coid=coid,
         symbol=intent["symbol"],

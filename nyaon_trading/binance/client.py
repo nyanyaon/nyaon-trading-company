@@ -77,14 +77,16 @@ class BinanceClient:
     def _log(self, r: httpx.Response) -> None:
         _LOG_DIR.mkdir(parents=True, exist_ok=True)
         date = time.strftime("%Y-%m-%d", time.gmtime())
-        line = json.dumps({
-            "ts": time.time(),
-            "method": r.request.method,
-            "path": r.request.url.path,
-            "status": r.status_code,
-            "weight": r.headers.get("X-MBX-USED-WEIGHT-1m"),
-            "latency_ms": int(r.elapsed.total_seconds() * 1000),
-        })
+        line = json.dumps(
+            {
+                "ts": time.time(),
+                "method": r.request.method,
+                "path": r.request.url.path,
+                "status": r.status_code,
+                "weight": r.headers.get("X-MBX-USED-WEIGHT-1m"),
+                "latency_ms": int(r.elapsed.total_seconds() * 1000),
+            }
+        )
         with (_LOG_DIR / f"{date}.jsonl").open("a") as f:
             f.write(line + "\n")
 

@@ -88,7 +88,16 @@ def write_incident(curr: dict[str, Any], reason: str) -> Path:
     name = curr["ts"].replace(":", "-")
     path = _INC_DIR / f"{name}.json"
     tmp = path.with_suffix(".tmp")
-    tmp.write_text(json.dumps({"ts": curr["ts"], "kind": "recon_critical", "detail": {"reason": reason, "snapshot": curr}}, indent=2))
+    tmp.write_text(
+        json.dumps(
+            {
+                "ts": curr["ts"],
+                "kind": "recon_critical",
+                "detail": {"reason": reason, "snapshot": curr},
+            },
+            indent=2,
+        )
+    )
     tmp.replace(path)
     _HALT.write_text(f"recon critical at {curr['ts']}: {reason}\n")
     return path

@@ -38,18 +38,18 @@ def run(mode: Mode, client: BinanceClient, max_symbols: int = 20) -> Path:
             s = mod.score(df)
             if s is None:
                 continue
-            ttl = time.strftime(
-                "%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 15 * 60)
+            ttl = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 15 * 60))
+            signals.append(
+                {
+                    "symbol": sym,
+                    "side": s.side,
+                    "strength": s.strength,
+                    "suggested_sl_bps": s.suggested_sl_bps,
+                    "suggested_tp_bps": s.suggested_tp_bps,
+                    "ttl": ttl,
+                    "source": src_name,
+                }
             )
-            signals.append({
-                "symbol": sym,
-                "side": s.side,
-                "strength": s.strength,
-                "suggested_sl_bps": s.suggested_sl_bps,
-                "suggested_tp_bps": s.suggested_tp_bps,
-                "ttl": ttl,
-                "source": src_name,
-            })
     _OUT.mkdir(parents=True, exist_ok=True)
     path = _OUT / f"{ts}.json"
     tmp = path.with_suffix(".tmp")

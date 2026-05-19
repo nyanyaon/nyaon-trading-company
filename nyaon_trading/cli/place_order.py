@@ -58,7 +58,11 @@ def run(argv: list[str]) -> int:
     leverage = int(intent.get("leverage", 3))
     set_leverage(client, intent["symbol"], leverage)
     price = _ticker_price(client, intent["symbol"])
-    qty_quote = float(intent["qty_quote"]) * mode.live_size_multiplier if mode.name == "live" else float(intent["qty_quote"])
+    qty_quote = (
+        float(intent["qty_quote"]) * mode.live_size_multiplier
+        if mode.name == "live"
+        else float(intent["qty_quote"])
+    )
     qty = _qty_from_quote(qty_quote, price)
     entry = place_market(client, intent, qty, attempt=0)
     # poll fill
@@ -67,16 +71,29 @@ def run(argv: list[str]) -> int:
         if avg:
             break
         time.sleep(1)
-        body = client.get_signed("/fapi/v1/order", {"symbol": intent["symbol"], "origClientOrderId": entry.coid})
+        body = client.get_signed(
+            "/fapi/v1/order", {"symbol": intent["symbol"], "origClientOrderId": entry.coid}
+        )
         avg = float(body.get("avgPrice", 0)) or None
     if not avg:
         intent["status"] = "failed"
         intent["failed_reason"] = "entry did not fill within 5s"
         intent_path.write_text(json.dumps(intent, indent=2))
         return 3
-    bps = lambda x: x / 10_000
-    sl_price = avg * (1 - bps(int(intent["sl_bps"]))) if intent["side"] == "BUY" else avg * (1 + bps(int(intent["sl_bps"])))
-    tp_price = avg * (1 + bps(int(intent["tp_bps"]))) if intent["side"] == "BUY" else avg * (1 - bps(int(intent["tp_bps"])))
+
+    def bps(x: float) -> float:
+        return x / 10_000
+
+    sl_price = (
+        avg * (1 - bps(int(intent["sl_bps"])))
+        if intent["side"] == "BUY"
+        else avg * (1 + bps(int(intent["sl_bps"])))
+    )
+    tp_price = (
+        avg * (1 + bps(int(intent["tp_bps"])))
+        if intent["side"] == "BUY"
+        else avg * (1 - bps(int(intent["tp_bps"])))
+    )
     place_stop(client, intent, round(sl_price, 2), attempt=0)
     place_take_profit(client, intent, round(tp_price, 2), attempt=0)
     intent["status"] = "filled"

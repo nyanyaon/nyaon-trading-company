@@ -54,9 +54,18 @@ def klines(client: BinanceClient, symbol: str, interval: str, limit: int) -> pd.
 
 def _to_frame(raw: list[list[Any]]) -> pd.DataFrame:
     cols = [
-        "open_time", "open", "high", "low", "close", "volume",
-        "close_time", "quote_volume", "trades",
-        "taker_base", "taker_quote", "ignore",
+        "open_time",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "close_time",
+        "quote_volume",
+        "trades",
+        "taker_base",
+        "taker_quote",
+        "ignore",
     ]
     df = pd.DataFrame(raw, columns=cols)
     for c in ("open", "high", "low", "close", "volume", "quote_volume"):

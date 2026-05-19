@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 
 from nyaon_trading.binance.client import BinanceClient
 from nyaon_trading.binance.market import klines

@@ -6,14 +6,16 @@ from nyaon_trading.strategy.mean_reversion import score
 
 def _frame(closes: list[float]) -> pd.DataFrame:
     n = len(closes)
-    return pd.DataFrame({
-        "open_time": pd.date_range("2026-01-01", periods=n, freq="15min", tz="UTC"),
-        "open": closes,
-        "high": [c + 1 for c in closes],
-        "low": [c - 1 for c in closes],
-        "close": closes,
-        "volume": [100.0] * n,
-    })
+    return pd.DataFrame(
+        {
+            "open_time": pd.date_range("2026-01-01", periods=n, freq="15min", tz="UTC"),
+            "open": closes,
+            "high": [c + 1 for c in closes],
+            "low": [c - 1 for c in closes],
+            "close": closes,
+            "volume": [100.0] * n,
+        }
+    )
 
 
 def test_mean_reversion_buy_on_lower_band_with_oversold_rsi():

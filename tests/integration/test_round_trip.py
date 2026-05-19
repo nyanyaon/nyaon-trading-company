@@ -3,7 +3,13 @@ import time
 import pytest
 
 from nyaon_trading.binance.orders import (
-    cancel_order, place_market, place_stop, place_take_profit, set_leverage, sl_coid, tp_coid,
+    cancel_order,
+    place_market,
+    place_stop,
+    place_take_profit,
+    set_leverage,
+    sl_coid,
+    tp_coid,
 )
 
 

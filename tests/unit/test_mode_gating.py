@@ -10,23 +10,37 @@ from nyaon_trading.cli.mode import set_live, GoLiveRefused
 def _write_audit(path: Path, pass_: bool, age_s: int = 0):
     path.parent.mkdir(parents=True, exist_ok=True)
     ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_s))
-    path.write_text(json.dumps({
-        "ts": ts,
-        "pass": pass_,
-        "criteria": {
-            "hit_rate": 0.5, "profit_factor": 1.5, "max_drawdown": 0.05,
-            "ops_critical_count": 0, "avg_slippage_bps": 3.0,
-        }
-    }))
+    path.write_text(
+        json.dumps(
+            {
+                "ts": ts,
+                "pass": pass_,
+                "criteria": {
+                    "hit_rate": 0.5,
+                    "profit_factor": 1.5,
+                    "max_drawdown": 0.05,
+                    "ops_critical_count": 0,
+                    "avg_slippage_bps": 3.0,
+                },
+            }
+        )
+    )
 
 
 def _seed(tmp_path: Path):
     s = tmp_path / "state"
     s.mkdir()
-    (s / "mode.json").write_text(json.dumps({
-        "mode": "testnet", "set_by": "ceo", "set_at": "2026-05-19T00:00:00Z",
-        "reason": "init", "live_size_multiplier": 1.0,
-    }))
+    (s / "mode.json").write_text(
+        json.dumps(
+            {
+                "mode": "testnet",
+                "set_by": "ceo",
+                "set_at": "2026-05-19T00:00:00Z",
+                "reason": "init",
+                "live_size_multiplier": 1.0,
+            }
+        )
+    )
     return s
 
 

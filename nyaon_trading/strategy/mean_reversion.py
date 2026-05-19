@@ -16,18 +16,18 @@ class MRSignal:
 
 def _rsi(close: pd.Series, period: int = 14) -> pd.Series:
     delta = close.diff()
-    gain = delta.clip(lower=0).rolling(period).mean()
-    loss = (-delta.clip(upper=0)).rolling(period).mean()
-    rs = gain / loss.replace(0, 1e-9)
-    return 100 - (100 / (1 + rs))
+    gain: pd.Series = delta.clip(lower=0).rolling(period).mean()  # type: ignore[assignment]
+    loss: pd.Series = (-delta.clip(upper=0)).rolling(period).mean()  # type: ignore[assignment]
+    rs: pd.Series = gain / loss.replace(0, 1e-9)
+    return pd.Series(100 - (100 / (1 + rs)))
 
 
 def score(df: pd.DataFrame, window: int = 20, sigma: float = 2.0) -> MRSignal | None:
     if len(df) < max(window, 14) + 1:
         return None
-    close = df["close"]
-    mean = close.rolling(window).mean()
-    std = close.rolling(window).std()
+    close: pd.Series = df["close"]  # type: ignore[assignment]
+    mean: pd.Series = close.rolling(window).mean()  # type: ignore[assignment]
+    std: pd.Series = close.rolling(window).std()  # type: ignore[assignment]
     upper = mean + sigma * std
     lower = mean - sigma * std
     rsi = _rsi(close)

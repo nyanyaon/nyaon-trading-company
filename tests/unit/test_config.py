@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 
 import pytest
@@ -11,13 +10,17 @@ def write_mode(tmp_path: Path, mode: str = "testnet") -> Path:
     state = tmp_path / "state"
     state.mkdir()
     p = state / "mode.json"
-    p.write_text(json.dumps({
-        "mode": mode,
-        "set_by": "test",
-        "set_at": "2026-05-19T00:00:00Z",
-        "reason": "test",
-        "live_size_multiplier": 0.5,
-    }))
+    p.write_text(
+        json.dumps(
+            {
+                "mode": mode,
+                "set_by": "test",
+                "set_at": "2026-05-19T00:00:00Z",
+                "reason": "test",
+                "live_size_multiplier": 0.5,
+            }
+        )
+    )
     return tmp_path
 
 

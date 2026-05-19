@@ -1,6 +1,3 @@
-import json
-from pathlib import Path
-
 import pytest
 
 from nyaon_trading.cli.place_order import refuse_if_halted, HaltedError

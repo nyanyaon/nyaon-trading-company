@@ -14,7 +14,9 @@ class TrendSignal:
     suggested_tp_bps: int
 
 
-def score(df: pd.DataFrame, donchian: int = 20, ema_fast: int = 50, ema_slow: int = 200) -> TrendSignal | None:
+def score(
+    df: pd.DataFrame, donchian: int = 20, ema_fast: int = 50, ema_slow: int = 200
+) -> TrendSignal | None:
     if len(df) < max(donchian, ema_slow):
         return None
     close = df["close"]
