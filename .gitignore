@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+# state is runtime data; schemas committed separately
+state/*
+!state/.schemas/
+!state/.gitkeep
