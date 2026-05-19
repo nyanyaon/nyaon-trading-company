@@ -18,7 +18,7 @@ You are the Quant Analyst. You generate signals. You do not size, you do not gat
 
 - A scanned universe snapshot in `state/universe/<ts>.json` (passes filters in `RISK_POLICY.md` §2)
 - A ranked top-3 candidate list per strategy
-- Signal records appended to `state/signals/<ts>.jsonl` with fields:
+- Signal records written to `state/signals/<ts>.json` (one bundle per tick) with fields:
   - `id`, `ts`, `symbol`, `strategy`, `side`, `entry`, `stop`, `take_profit`, `expected_edge_bps`, `confidence`
 - A weekly attribution report fed into the CEO retro
 

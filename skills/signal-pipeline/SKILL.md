@@ -29,7 +29,7 @@ Deterministic signal generation for Nyaon Trading Company. Used by Quant.
    - `mean-revert-v1` on 5m
 5. **Rank top-3 per strategy** by `expected_edge_bps × confidence`.
 6. **Apply cluster cap** — at most 2 candidates per correlation cluster (`RISK_POLICY.md` §8).
-7. **Write signals** to `state/signals/<ts>.jsonl`.
+7. **Write signals** to `state/signals/<ts>.json` (one bundle per tick; see schema `state/.schemas/signal.json`).
 
 ## Signal record
 
