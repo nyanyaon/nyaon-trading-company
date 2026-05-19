@@ -5,11 +5,11 @@ description: Nine-gate deterministic risk acceptance, sizing math, and halt logi
 
 # risk-gating
 
-CRO's deterministic decision skill. Inputs are the pending signal queue and `state/account.json`. Output is approved sized orders and halt-flag transitions.
+CRO's deterministic decision skill. Inputs are proposed intents in `state/intents/` (status=`proposed`) and the newest snapshot in `state/snapshots/<ts>.json`. Output is approved sized intents (status flipped to `approved`) and halt-flag transitions via `uv run nyaon halt`.
 
 ## Nine gates (evaluated in order; reject on first failure)
 
-1. **Halt clear** — `state/halt.json.halt_flag == false`.
+1. **Halt clear** — `state/halt.flag` does not exist.
 2. **Symbol passes filters** — `RISK_POLICY.md` §2.
 3. **Loss budgets** — daily PnL > -3% equity AND weekly PnL > -7% equity.
 4. **Concurrent-position cap** — open positions < 5.

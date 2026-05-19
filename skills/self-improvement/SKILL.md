@@ -9,9 +9,9 @@ CEO weekly retro. Runs every Sunday 23:00 UTC. Drives the company's improvement 
 
 ## Inputs
 
-- `state/account.json` history (Ops snapshots over the week)
+- `state/snapshots/` (Ops snapshots over the week)
 - `state/signals/` (all signals raised by Quant)
-- `state/orders/filled/` and `state/strategy_stats/` (closed trades and outcomes)
+- `state/orders/` and `state/strategy_stats/` (placed orders and closed-trade outcomes)
 - `state/incidents/` (Ops critical mismatches)
 - `journal/cro/`, `journal/trader/`, `journal/ops/`, `journal/quant/`
 

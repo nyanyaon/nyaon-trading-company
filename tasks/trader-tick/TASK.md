@@ -6,10 +6,10 @@ project: strategy-testing
 recurring: true
 ---
 
-Run the exchange-ops skill (execution side). Read `state/halt.json`. For each `state/orders/pending/<id>.json`, place the entry order with deterministic clientOrderId. On fill, place paired stop-loss and take-profit reduce-only orders. Update `state/positions/` and `state/orders/filled/`.
+Run the exchange-ops skill (execution side). Check `state/halt.flag` — if present, skip new entries (manage exits only). For each `state/intents/<intent_id>.json` with `status=approved`, run `uv run nyaon place-order --intent state/intents/<intent_id>.json`. The CLI places entry with deterministic `coid`, polls fill, then places paired SL/TP. Order audit lands in `state/orders/<coid>.json`.
 
 Done when:
-- Every pending intent has either a placed order ack or a logged failure with reason
-- Every filled entry has its paired stop and take-profit registered
+- Every approved intent has `status` flipped to `filled` or `failed` (with `failed_reason`)
+- Every filled entry has its paired SL/TP coids in `state/orders/`
 - `journal/trader/YYYY-MM-DD.log` has a tick entry with per-order slippage in bps
-- If halt is on, no new entries are placed (exits still managed)
+- If `state/halt.flag` exists, no new entries are placed (exits still managed via `uv run nyaon cancel`)

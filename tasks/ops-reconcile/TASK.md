@@ -6,10 +6,10 @@ project: strategy-testing
 recurring: true
 ---
 
-Run the exchange-ops skill (reconciliation side). Pull account + open orders + position risk. Build canonical `state/account.json`. Diff against prior snapshot and against Trader's internal `state/positions/` and `state/orders/`.
+Run `uv run nyaon snapshot`. The CLI pulls account + open orders + position risk + income, builds canonical snapshot, diffs against prior snapshot in `state/snapshots/`, classifies `clean | benign | critical`, and on critical writes incident + touches halt flag.
 
 Done when:
-- `state/account.json` updated atomically
-- Diff classified as `clean | benign | critical`
-- Critical mismatch → `state/incidents/<ts>.json` written + `halt_flag = true`
-- `journal/ops/YYYY-MM-DD.log` has a tick entry
+- `state/snapshots/<ts>.json` written atomically (newest sorts last by ISO timestamp)
+- CLI exit code: 0 for clean/benign, 3 for critical
+- Critical mismatch → `state/incidents/<ts>.json` exists + `state/halt.flag` present
+- `journal/ops/YYYY-MM-DD.log` has a tick entry with classification
