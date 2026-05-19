@@ -8,7 +8,7 @@ Autonomous AI crypto futures trading firm. 5 agents, Binance USDT-M, self-improv
 
 | Project            | Phase            | Owns                                                                 |
 | ------------------ | ---------------- | -------------------------------------------------------------------- |
-| `nyaon-cli`        | Phase −1         | `nyaon-cli-port`, `nyaon-cli-skill-author` — make CLI reachable + author canonical skill |
+| `nyaon-cli`        | Phase −1         | `create-nyaon-cli`, `nyaon-cli-skill-author` — make CLI reachable + author canonical skill |
 | `connection-check` | Day 0            | `ceo-connectivity-check` — writes `state/connection_ok.json` gate    |
 | `strategy-testing` | Wk 1-2 testnet   | Pipeline ticks (quant/cro/trader/ops) + week-2 `promotion-audit`     |
 | `month-1-goal`     | Outcome / Wk 3-4 | `ceo-weekly-retro`, live ramp, $1000 PnL target                      |

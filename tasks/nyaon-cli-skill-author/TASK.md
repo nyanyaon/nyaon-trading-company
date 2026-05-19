@@ -12,7 +12,7 @@ This skill becomes the single source of truth that every agent role's `AGENTS.md
 
 ## Precondition
 
-`nyaon-cli-port` task is done. `nyaon mode show` works from the workspace.
+`create-nyaon-cli` task is done. `nyaon mode show` works from the workspace.
 
 ## Procedure
 
@@ -41,7 +41,7 @@ This skill becomes the single source of truth that every agent role's `AGENTS.md
 3. **Required sections in the authored skill.** skill-creator will scaffold; ensure all of the following land in `skills/nyaon-cli/SKILL.md`:
 
    - **Purpose** — one-liner: which CLI, who calls it, what it gates.
-   - **Invocation** — `uv run nyaon ...` (and `nyaon ...` if Option 2 of `nyaon-cli-port` was used).
+   - **Invocation** — `uv run nyaon ...` (and `nyaon ...` if Option 2 of `create-nyaon-cli` was used).
    - **Mode resolution** — every call reads `state/mode.json`; secrets resolved from env per mode (`BINANCE_TESTNET_*` or `BINANCE_LIVE_*`).
    - **Per-role permission matrix** — table mapping each subcommand to allowed roles (CEO, CRO, Quant, Trader, Ops). Mark mechanically-enforced vs paperclip-env-enforced.
    - **Command reference** — one section per subcommand:

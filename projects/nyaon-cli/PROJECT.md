@@ -11,14 +11,14 @@ Phase −1. Pre-day-zero. Solves the paperclip-import gap: when a company is imp
 
 This project owns two outputs:
 
-1. A working `nyaon` CLI installation inside the paperclip workspace (via `nyaon-cli-port`).
+1. A working `nyaon` CLI installation inside the paperclip workspace (via `create-nyaon-cli`).
 2. A canonical, agent-readable skill at `skills/nyaon-cli/SKILL.md` authored by the CEO via the `skill-creator` skill (via `nyaon-cli-skill-author`).
 
 ## Scope
 
 | Task | Owner | Output |
 | ---- | ----- | ------ |
-| `nyaon-cli-port` | CEO | CLI reachable from workspace; `which nyaon` (or equivalent) returns a working path |
+| `create-nyaon-cli` | CEO | CLI reachable from workspace; `which nyaon` (or equivalent) returns a working path |
 | `nyaon-cli-skill-author` | CEO | `skills/nyaon-cli/SKILL.md` covers every `nyaon` subcommand with role permissions, exit codes, state-file effects |
 
 ## Pass criteria
