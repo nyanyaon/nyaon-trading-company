@@ -8,9 +8,9 @@ Autonomous AI crypto futures trading firm. 5 agents, Binance USDT-M, self-improv
 
 | Project            | Phase            | Owns                                                                 |
 | ------------------ | ---------------- | -------------------------------------------------------------------- |
-| `nyaon-cli`        | Phase −1         | `create-nyaon-cli`, `nyaon-cli-skill-author` — make CLI reachable + author canonical skill |
+| `nyaon-cli`        | Phase −1         | `create-nyaon-cli`, `nyaon-cli-skill-author`, `add-nyaon-backtest` — make CLI reachable + author canonical skill + add backtest subcommand |
 | `connection-check` | Day 0            | `ceo-connectivity-check` — writes `state/connection_ok.json` gate    |
-| `strategy-testing` | Wk 1-2 testnet   | Pipeline ticks (quant/cro/trader/ops) + week-2 `promotion-audit`     |
+| `strategy-testing` | Wk 1-2 testnet   | Pipeline ticks (quant/cro/trader/ops) + Friday `quant-rnd` + week-2 `promotion-audit` |
 | `month-1-goal`     | Outcome / Wk 3-4 | `ceo-weekly-retro`, live ramp, $1000 PnL target                      |
 
 Strict dependency chain: `nyaon-cli` → `connection-check` → `strategy-testing` → `month-1-goal`. `nyaon-cli` fixes the paperclip-import gap (CLI source isn't bundled by `paperclipai company import`) by porting the CLI into the workspace and authoring a definitive skill via `skill-creator`. Every tick in `strategy-testing` (and `month-1-goal`) checks for `state/connection_ok.json` at the top of its run and no-ops cleanly when missing. `month-1-goal` additionally requires `strategy-testing`'s `promotion-audit` to pass before any live order is placed.
@@ -21,8 +21,11 @@ Pipeline:
 
 ```
 Quant (15m) → CRO (1m) → Trader (1m) → Ops (5m)
-                                       └── weekly CEO retro
+                                       └── Quant R&D (Fri 18:00 UTC)
+                                       └── weekly CEO retro (Sun 23:00 UTC)
 ```
+
+The R&D loop (`quant-rnd` task via `strategy-rnd` skill): Friday Quant pulls historical klines, backtests hypothesized strategy variants in `state/rnd_cache/`, and writes proposals to `state/proposals/<id>.json` for CEO review. CEO approves/rejects each proposal during Sunday retro; Quant applies approved diffs on the following Friday. Code-level diffs (new strategy files) additionally escalate to the user. Parameter-only diffs apply with CEO approval alone.
 
 - **Quant** scans all USDT-M perpetuals, applies liquidity/spread/volatility/funding filters, runs two seeded strategies, publishes top-3 candidates per strategy.
 - **CRO** runs nine deterministic risk gates (`RISK_POLICY.md` §3), sizes accepted signals, may halt unilaterally.

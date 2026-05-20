@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["id", "ts", "author", "title", "kind", "files", "rationale", "expected_impact", "risk", "status"],
+  "properties": {
+    "id": { "type": "string" },
+    "ts": { "type": "string", "format": "date-time" },
+    "author": { "enum": ["quant", "cro", "ops", "ceo"] },
+    "title": { "type": "string" },
+    "kind": { "enum": ["parameter", "code", "delete"] },
+    "files": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "rationale": { "type": "string" },
+    "expected_impact": { "type": "string" },
+    "risk": { "type": "string" },
+    "status": { "enum": ["proposed", "approved", "rejected", "needs_revision", "applied", "withdrawn"] },
+    "reviewed_by": { "type": "string" },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "review_notes": { "type": "string" },
+    "applied_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

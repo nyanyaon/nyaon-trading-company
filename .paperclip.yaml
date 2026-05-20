@@ -116,6 +116,11 @@ routines:
       - kind: schedule
         cronExpression: "*/15 * * * *"
         timezone: UTC
+  quant-rnd:
+    triggers:
+      - kind: schedule
+        cronExpression: "0 18 * * 5"
+        timezone: UTC
   cro-tick:
     triggers:
       - kind: schedule

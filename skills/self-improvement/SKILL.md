@@ -15,7 +15,8 @@ CEO weekly retro. Runs every Sunday 23:00 UTC. Drives the company's improvement 
 - `state/orders/` and `state/strategy_stats/` (placed orders and closed-trade outcomes)
 - `state/incidents/` (Ops critical mismatches)
 - `state/audits/` (prior promotion-audit results)
-- `journal/cro/`, `journal/trader/`, `journal/ops/`, `journal/quant/`
+- `state/proposals/*.json` with `status=proposed` (Quant R&D proposals awaiting CEO review)
+- `journal/cro/`, `journal/trader/`, `journal/ops/`, `journal/quant/` (including `journal/quant/rnd-YYYY-WW.md`)
 
 ## CLI (read-only checks during the retro)
 
@@ -55,11 +56,27 @@ Write `journal/retros/YYYY-WW.md`:
 
 ## Diff approval
 
-For each proposed diff:
+Two streams of proposed diffs converge during the Sunday retro:
 
-- If it's a parameter change (numeric thresholds, weights) → CEO applies directly.
-- If it's a logic change (new strategy code, new gate) → CEO writes an escalation message to the user with the diff and the reason. Wait for human confirmation before applying.
-- All diffs land before the next Monday 00:00 UTC.
+1. **CEO-authored diffs** (own analysis): edit files directly.
+2. **Quant R&D proposals** (`state/proposals/*.json` with `status=proposed`): read each one in turn.
+
+For each Quant proposal:
+
+- Read `state/proposals/<id>.json` and follow `rationale` to the linked `journal/quant/rnd-YYYY-WW.md` section. Inspect the backtest table and equity curve.
+- Sanity-check the anti-overfitting story: train/test split honored? multi-symbol verified? sample-size floor met? drawdown floor met?
+- Decision:
+  - **Approve** (`kind=parameter`): update `status="approved"`, fill `reviewed_by="ceo"`, `reviewed_at`, `review_notes`. Quant applies the diff during the next Friday R&D tick.
+  - **Approve** (`kind=code` / new strategy file): also escalate to the user per `agents/ceo/AGENTS.md` boundaries. Diff does not apply until user confirms.
+  - **Reject**: `status="rejected"` + `review_notes`. Quant logs in next R&D cycle as learning material.
+  - **Needs revision**: `status="needs_revision"` + `review_notes` with the specific gap. Quant rewrites the proposal next Friday.
+
+For CEO-authored diffs:
+
+- Parameter change (numeric thresholds, weights) → CEO edits directly during the retro.
+- Logic change (new strategy code, new gate) → CEO writes an escalation message to the user with the diff and the reason. Wait for human confirmation before applying.
+
+All approved diffs land before the next Monday 00:00 UTC. Diffs that miss the window roll to the following week.
 
 ## Promotion decision
 
