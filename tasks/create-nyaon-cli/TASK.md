@@ -12,12 +12,35 @@ Paperclip's `company import` bundles only spec-recognized files (`COMPANY.md`, `
 
 ## Reference material (read first)
 
-| Artifact | Absolute path |
-| --- | --- |
-| Design spec | `/home/nyaon/nyaon-trading-company/docs/superpowers/specs/2026-05-19-binance-connectivity-design.md` |
-| Implementation plan | `/home/nyaon/nyaon-trading-company/docs/superpowers/plans/2026-05-19-binance-connectivity.md` |
+Canonical source: <https://github.com/nyanyaon/nyaon-trading-company>
 
-The plan contains the **exact, verbatim content** for every file to create — 16 numbered phases, each with TDD steps, complete code blocks, and commit messages. This task is the executor; the plan is the source of truth. If either file is missing from the host, escalate to the user before proceeding.
+| Artifact | URL |
+| --- | --- |
+| Design spec | <https://raw.githubusercontent.com/nyanyaon/nyaon-trading-company/main/docs/superpowers/specs/2026-05-19-binance-connectivity-design.md> |
+| Implementation plan | <https://raw.githubusercontent.com/nyanyaon/nyaon-trading-company/main/docs/superpowers/plans/2026-05-19-binance-connectivity.md> |
+| Working code (browse) | <https://github.com/nyanyaon/nyaon-trading-company/tree/main/nyaon_trading> |
+| `bin/nyaon` | <https://raw.githubusercontent.com/nyanyaon/nyaon-trading-company/main/bin/nyaon> |
+| `pyproject.toml` | <https://raw.githubusercontent.com/nyanyaon/nyaon-trading-company/main/pyproject.toml> |
+| State schemas dir | <https://github.com/nyanyaon/nyaon-trading-company/tree/main/state/.schemas> |
+| Unit tests dir | <https://github.com/nyanyaon/nyaon-trading-company/tree/main/tests/unit> |
+
+The plan contains the **exact, verbatim content** for every file to create — 16 numbered phases, each with TDD steps, complete code blocks, and commit messages. This task is the executor; the plan is the source of truth.
+
+### Pulling the reference
+
+Two options for getting full file contents into the agent context:
+
+```bash
+# Option A — clone once, read freely
+git clone --depth=1 https://github.com/nyanyaon/nyaon-trading-company.git /tmp/nyaon-ref
+ls /tmp/nyaon-ref/docs/superpowers/
+
+# Option B — curl individual files
+curl -sL https://raw.githubusercontent.com/nyanyaon/nyaon-trading-company/main/docs/superpowers/plans/2026-05-19-binance-connectivity.md \
+  > /tmp/plan.md
+```
+
+If both fail (offline, GitHub unreachable, repo private), escalate to the user before proceeding.
 
 ## File manifest (what gets created in the workspace)
 

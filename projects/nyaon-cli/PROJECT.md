@@ -36,7 +36,7 @@ Both tasks completed AND:
 
 ## Dependencies
 
-- Source repo `/home/nyaon/nyaon-trading-company` available
+- Canonical source available at <https://github.com/nyanyaon/nyaon-trading-company> (CEO can `git clone` or `curl raw.githubusercontent.com/...` for the design spec, plan, and reference code)
 - `uv` on PATH for the agent subprocess
 - `skill-creator` skill available in the agent's Claude Code session
 

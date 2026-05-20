@@ -63,7 +63,8 @@ The R&D loop (`quant-rnd` task via `strategy-rnd` skill): Friday Quant pulls his
 ## Getting started
 
 ```bash
-paperclipai company import --from /home/nyaon/nyaon-trading-company
+git clone https://github.com/nyanyaon/nyaon-trading-company.git
+paperclipai company import --from ./nyaon-trading-company
 ```
 
 Then provision secrets:
